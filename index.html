@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO / EEAT Meta Tags -->
+  <title>DOT Staking — NPoS, Nomination, Rewards, APY/APR, Pools &amp; Troubleshooting (2026)</title>
+  <meta name="description" content="DOT staking guide (2026): how Polkadot's NPoS works, nominating validators, nomination pools, era rewards, 28-day unbonding, OpenGov participation, APY vs APR, stash accounts, slashing conditions, comparisons, and troubleshooting. Includes KPIs, runbook, and a deep FAQ.">
+  <meta name="author" content="Crypto Finance Experts">
+  <link rel="canonical" href="https://lido-dot-staking.example.com/">
+
+  <link rel="icon" type="image/png" href="lido.staking.logo.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://lido-dot-staking.example.com/">
+  <meta property="og:title" content="DOT Staking — NPoS, Nomination, Rewards, APY/APR, Pools &amp; Troubleshooting (2026)">
+  <meta property="og:description" content="Practical DOT staking guide: Polkadot NPoS mechanics, nomination, era rewards, nomination pools, 28-day unbonding, OpenGov, APY/APR, and troubleshooting.">
+  <meta property="og:image" content="cover.png">
+
+  <!-- Twitter Card -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://lido-dot-staking.example.com/">
+  <meta property="twitter:title" content="DOT Staking — NPoS, Nomination, Rewards, APY/APR &amp; Troubleshooting (2026)">
+  <meta property="twitter:description" content="How to stake DOT on Polkadot: NPoS mechanics, nominating validators, nomination pools, 28-day unbonding, and OpenGov in 2025–2026.">
+  <meta property="twitter:image" content="cover.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "DOT Staking — NPoS, Nomination, Rewards, APY/APR, Pools & Troubleshooting (2026)",
+    "description": "Comprehensive guide to DOT staking on Polkadot: NPoS mechanics, nomination strategy, era rewards, nomination pools, 28-day unbonding, OpenGov, and troubleshooting.",
+    "author": { "@type": "Organization", "name": "Crypto Finance Experts" },
+    "publisher": { "@type": "Organization", "name": "Crypto Finance Experts" },
+    "datePublished": "2026-01-01",
+    "dateModified": "2026-03-01"
+  }
+  </script>
+
+  <style>
+    :root{
+      /* Polkadot Pink Theme */
+      --primary:#E6007A;
+      --primary-600:#C70068;
+      --primary-700:#A50057;
+      --accent:#F472B6;
+
+      --ink:#FFF1F9;
+      --muted:#A1A1AA;
+      --muted-2:#71717A;
+
+      --bg:#0D020A;
+      --panel:#170310;
+      --panel-2:#1E0416;
+      --line:rgba(255,255,255,.08);
+
+      --ok:#34D399;
+      --warn:#F59E0B;
+      --error:#F87171;
+
+      --shadow:0 12px 32px rgba(0,0,0,.55);
+      --radius:14px;
+      --radius-sm:10px;
+      --radius-lg:20px;
+      --gap:1.25rem;
+      --gap-lg:2rem;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      color:var(--muted);
+      background:var(--bg);
+      line-height:1.65;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    img{max-width:100%;height:auto;display:block}
+    .container{max-width:1100px;margin:0 auto;padding:0 1.25rem}
+
+    h1,h2,h3,h4{color:var(--ink);line-height:1.25;margin:0 0 .6rem}
+    h1{font-size:clamp(2rem,4.5vw,3.1rem);font-weight:800;letter-spacing:-.2px}
+    h2{font-size:clamp(1.35rem,2.8vw,2rem);margin-top:2.2rem;padding-top:.6rem;border-top:1px solid var(--line)}
+    h3{font-size:clamp(1.05rem,2.2vw,1.3rem);color:#FBCFE8}
+
+    p,li,td,th{font-size:1rem}
+    .lead{font-size:1.125rem;color:#FCE7F3}
+    .muted{color:var(--muted)}
+    .muted-2{color:var(--muted-2)}
+
+    header.hero{padding:clamp(2rem,6vw,4rem) 0;border-bottom:1px solid var(--line)}
+    .hero-grid{display:grid;gap:var(--gap-lg);grid-template-columns:1fr;align-items:stretch}
+    .hero-card{
+      background:var(--panel);border:1px solid var(--line);
+      border-radius:var(--radius-lg);padding:clamp(1rem,3vw,1.75rem);box-shadow:var(--shadow);
+    }
+
+    .brand-row{display:flex;align-items:center;gap:.9rem;margin-bottom:.75rem}
+    .brand-logo{
+      width:54px;height:54px;border-radius:14px;border:1px solid var(--line);
+      background:rgba(230,0,122,.08);padding:.35rem;object-fit:contain;
+      box-shadow:0 6px 16px rgba(0,0,0,.30);flex:0 0 auto;
+    }
+
+    .cta{
+      display:inline-flex;align-items:center;gap:.5rem;
+      background:var(--primary);color:#fff;padding:1rem 2.5rem;border-radius:12px;
+      font-weight:800;font-size:1.05rem;letter-spacing:.2px;
+      box-shadow:0 10px 28px rgba(230,0,122,.32);border:1px solid rgba(255,255,255,.10);
+      transition:background .18s,transform .18s,box-shadow .18s;
+    }
+    .cta:hover{background:var(--primary-600);transform:translateY(-2px);box-shadow:0 16px 36px rgba(230,0,122,.44);text-decoration:none}
+
+    .note{
+      border-left:2px solid var(--primary);padding:.75rem 1rem;
+      background:rgba(230,0,122,.07);border-radius:0 10px 10px 0;color:#FCE7F3;
+    }
+
+    section.step-guide{padding:clamp(2rem,6vw,3.5rem) 0}
+    .steps{display:grid;gap:var(--gap);grid-template-columns:1fr}
+    .step{
+      background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+      padding:1.2rem;box-shadow:0 8px 20px rgba(0,0,0,.35);
+      transition:transform .2s ease,border-color .2s ease;
+    }
+    .step:hover{transform:translateY(-3px);border-color:rgba(244,114,182,.28)}
+    .step .icon{
+      width:48px;height:48px;border-radius:10px;display:inline-grid;place-items:center;
+      background:rgba(230,0,122,.12);margin-bottom:.6rem;color:#FBCFE8;
+      font-weight:900;border:1px solid rgba(244,114,182,.20);
+    }
+
+    main .card{
+      background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+      padding:1.25rem;margin:1.25rem 0;box-shadow:0 8px 20px rgba(0,0,0,.35);
+    }
+
+    .grid-2{display:grid;gap:var(--gap);grid-template-columns:1fr}
+    .pillbar{display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 0}
+    .pill{border:1px solid var(--line);background:rgba(230,0,122,.07);padding:.4rem .65rem;border-radius:999px;font-weight:700;color:#FBCFE8}
+
+    .toc{border:1px solid var(--line);background:rgba(230,0,122,.04);border-radius:var(--radius);padding:1rem}
+    .toc strong{color:var(--ink)}
+    .toc ul{margin:.5rem 0 0;padding-left:1.1rem}
+    .toc li{margin:.25rem 0}
+    .toc a{font-weight:700;color:var(--accent)}
+
+    table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:12px}
+    th,td{padding:.9rem;border-bottom:1px solid var(--line)}
+    th{background:rgba(230,0,122,.09);color:var(--ink);text-align:left}
+    tr.highlight{background:rgba(230,0,122,.05)}
+    tr:hover{background:rgba(255,255,255,.02)}
+
+    .ok{color:var(--ok)}.warn{color:var(--warn)}.err{color:var(--error)}
+
+    .eeat{
+      background:rgba(230,0,122,.04);border:1px solid var(--line);
+      border-radius:var(--radius);padding:1.25rem;box-shadow:0 8px 20px rgba(0,0,0,.35);
+    }
+
+    .faq-item{border-bottom:1px solid var(--line);padding:.9rem 0}
+    .faq-button{all:unset;display:flex;justify-content:space-between;align-items:center;width:100%;cursor:pointer;padding:.3rem 0}
+    .faq-button:focus-visible{outline:2px solid var(--primary)}
+    .faq-button h3{margin:0;font-weight:800}
+    .faq-content{max-height:0;overflow:hidden;transition:max-height .25s ease}
+    .faq-content.open{padding-top:.6rem}
+    .faq-plus{font-weight:900;color:var(--accent);font-size:1.2rem}
+
+    .cta-center{display:flex;justify-content:center;margin-top:1.25rem}
+
+    .badge-row{display:flex;flex-wrap:wrap;gap:.6rem;margin:.9rem 0 0}
+    .badge{border:1px solid rgba(244,114,182,.20);background:rgba(244,114,182,.06);padding:.35rem .6rem;border-radius:999px;font-weight:800;color:#FBCFE8}
+
+    .callout-grid{display:grid;gap:var(--gap);grid-template-columns:1fr;margin-top:.75rem}
+    .mini{background:rgba(255,255,255,.025);border:1px solid var(--line);border-radius:var(--radius);padding:1rem}
+    .mini h3{margin-bottom:.35rem}
+    .kpi-badges{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.5rem}
+    .kpi-badges span{
+      border:1px solid rgba(230,0,122,.22);background:rgba(230,0,122,.09);
+      color:#FBCFE8;padding:.3rem .55rem;border-radius:999px;font-weight:800;font-size:.9rem;
+    }
+
+    .src{
+      display:inline-flex;align-items:center;gap:.2rem;font-size:.78rem;font-weight:700;
+      color:var(--accent);border:1px solid rgba(244,114,182,.24);background:rgba(230,0,122,.08);
+      border-radius:5px;padding:.1rem .4rem;vertical-align:middle;white-space:nowrap;
+    }
+    .src:hover{background:rgba(244,114,182,.16);text-decoration:none}
+    .src::before{content:'↗ ';font-size:.7rem;opacity:.7}
+
+    /* NPoS election visual */
+    .npos-flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem;margin:1rem 0}
+    .npos-node{background:rgba(230,0,122,.10);border:1px solid rgba(244,114,182,.22);border-radius:10px;padding:.55rem .9rem;font-size:.85rem;font-weight:700;color:#FBCFE8;text-align:center;min-width:90px}
+    .npos-node.validator{background:rgba(230,0,122,.20);border-color:rgba(244,114,182,.40);color:#FCE7F3}
+    .npos-arrow{color:var(--accent);font-size:1rem;font-weight:900}
+
+    /* era timeline */
+    .era-bars{display:grid;gap:.5rem;margin:1rem 0}
+    .era-row{display:flex;align-items:center;gap:.7rem}
+    .era-label{min-width:120px;font-size:.85rem;font-weight:700;color:#FBCFE8}
+    .era-track{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
+    .era-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--primary),var(--accent))}
+    .era-val{min-width:60px;text-align:right;font-size:.85rem;font-weight:800;color:var(--accent)}
+
+    @media(min-width:860px){
+      .steps{grid-template-columns:repeat(4,1fr)}
+      .grid-2{grid-template-columns:1fr 1fr}
+      .callout-grid{grid-template-columns:1fr 1fr}
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="hero" role="banner">
+  <div class="container hero-grid">
+    <div class="hero-card" aria-label="Intro">
+      <div class="brand-row">
+        <img class="brand-logo" src="lido.staking.logo.png" alt="Lido Staking logo">
+        <div>
+          <div class="muted" style="font-weight:800;letter-spacing:.2px;">Operational Guide</div>
+          <div class="muted-2" style="font-size:.95rem;">NPoS Election&nbsp;•&nbsp;Nomination Strategy&nbsp;•&nbsp;Era Rewards&nbsp;•&nbsp;Nomination Pools&nbsp;•&nbsp;OpenGov</div>
+        </div>
+      </div>
+
+      <h1>DOT Staking</h1>
+      <p class="lead">
+        A practical, technically detailed guide to staking DOT on Polkadot: how the
+        Nominated Proof-of-Stake (NPoS) election mechanism works, how to build an effective
+        nomination strategy, how era-based rewards are calculated, how nomination pools
+        enable participation without the high direct nomination minimum, how to read
+        <strong>APY vs APR</strong> correctly, and how 28-day unbonding affects your liquidity planning.
+      </p>
+
+      <div class="cta-center">
+        <a href="https://lido-staking.net/" class="cta" target="_blank" rel="noopener" aria-label="Explore staking options with Lido">
+          Explore Staking Options &nbsp;→
+        </a>
+      </div>
+
+      <div class="note" style="margin-top:1.25rem;">
+        <strong>Core rule:</strong> Polkadot's NPoS system is more complex than most PoS networks —
+        the election algorithm selects a fixed validator set each era, and only nominators backing
+        elected validators earn rewards. Nomination strategy directly determines whether you earn
+        full rewards, reduced rewards, or zero rewards in a given era.
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="step-guide" aria-labelledby="how-works">
+  <div class="container">
+    <h2 id="how-works">How NPoS Works: End-to-End Workflow (Nominate → Election → Era → Rewards)</h2>
+    <div class="steps" role="list">
+      <article class="step" role="listitem">
+        <div class="icon">①</div>
+        <h3>Nominate up to 16 validators</h3>
+        <p>
+          DOT holders nominate up to 16 validators they trust to secure the network.
+          Nominations signal preference — the NPoS election algorithm decides which
+          nominated validators are actually elected for each era based on stake optimization.
+        </p>
+      </article>
+      <article class="step" role="listitem">
+        <div class="icon">②</div>
+        <h3>Phragmén election selects active set</h3>
+        <p>
+          Each era (~24 hours), Polkadot's sequential Phragmén algorithm selects the active
+          validator set (currently 297 validators) from all candidates. It optimises for
+          proportional representation of stake — spreading nominator stake to maximize
+          network security.
+        </p>
+      </article>
+      <article class="step" role="listitem">
+        <div class="icon">③</div>
+        <h3>Earn rewards only from elected validators</h3>
+        <p>
+          You earn staking rewards only in eras where at least one of your nominated validators
+          is elected to the active set. If all your nominations miss the active set for an era,
+          you earn zero rewards that era. This makes nomination strategy critical.
+        </p>
+      </article>
+      <article class="step" role="listitem">
+        <div class="icon">④</div>
+        <h3>Claim rewards and manage unbonding</h3>
+        <p>
+          Rewards must be manually claimed within 84 eras (~84 days) or they expire.
+          Unbonding takes 28 days — during which your DOT earns no rewards and cannot be transferred.
+          Plan exits well in advance.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<main class="container" role="main">
+
+  <section class="card toc" aria-label="Table of Contents">
+    <strong>On this page (DOT Staking):</strong>
+    <ul>
+      <li><a href="#overview">Overview — NPoS and what makes Polkadot's design unique</a></li>
+      <li><a href="#npos-mechanics">NPoS mechanics: Phragmén election and stake distribution</a></li>
+      <li><a href="#rewards">Rewards: era structure and what drives yield</a></li>
+      <li><a href="#apy-apr">APY / APR: how to compare correctly</a></li>
+      <li><a href="#how-to">How to nominate: step-by-step tutorial</a></li>
+      <li><a href="#calculator">Calculator: net yield estimation framework</a></li>
+      <li><a href="#nomination-pools">Nomination pools: staking without the minimum</a></li>
+      <li><a href="#unbonding">28-day unbonding: planning and implications</a></li>
+      <li><a href="#opengov">OpenGov: governance participation for DOT stakers</a></li>
+      <li><a href="#review">Review: legitimacy signals and what to watch</a></li>
+      <li><a href="#safety">Risks: slashing, over-subscription, and nomination failures</a></li>
+      <li><a href="#comparison">Comparison: direct nomination vs nomination pools vs liquid staking</a></li>
+      <li><a href="#best-practices">Best practices: high-impact operational rules</a></li>
+      <li><a href="#troubleshooting">Troubleshooting and common issues</a></li>
+      <li><a href="#eeat">Sources and references</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </section>
+
+  <section class="card" id="overview">
+    <h2>Overview: NPoS and What Makes Polkadot's Design Unique</h2>
+    <p>
+      Polkadot uses Nominated Proof-of-Stake (NPoS) — a staking design distinct from
+      both Cardano's delegation model and Ethereum's validator model. In NPoS, token holders
+      (nominators) select up to 16 validators they trust, and an election algorithm
+      (sequential Phragmén) optimally assigns stake to a fixed active validator set each era.
+      The protocol specification is maintained at the
+      <a href="https://wiki.polkadot.network/" target="_blank" rel="noopener nofollow" class="src">Polkadot Wiki</a>.
+    </p>
+
+    <div class="pillbar" aria-label="Key topics">
+      <span class="pill">NPoS Election</span>
+      <span class="pill">Phragmén Algorithm</span>
+      <span class="pill">Era Rewards</span>
+      <span class="pill">Nomination Pools</span>
+      <span class="pill">28-Day Unbonding</span>
+      <span class="pill">OpenGov</span>
+    </div>
+
+    <div class="callout-grid" role="list">
+      <div class="mini" role="listitem">
+        <h3>Key properties of Polkadot staking</h3>
+        <p class="muted">
+          Fixed active validator set (currently 297) elected each era. Up to 16 nominations per nominator.
+          Rewards only from elected validators. 28-day unbonding period. Manual reward claiming
+          required (within 84 eras). No auto-compounding — each claim and rebond is a separate transaction.
+          Nomination pools enable participation without the high direct nomination minimum.
+        </p>
+        <div class="kpi-badges">
+          <span>Fixed validator set</span><span>Election-based</span><span>Manual claims</span>
+        </div>
+      </div>
+      <div class="mini" role="listitem">
+        <h3>How this differs from other PoS networks</h3>
+        <p class="muted">
+          Unlike Cardano (any pool, no lock-up, auto-compound) or Ethereum (solo validator or LST),
+          Polkadot's election mechanism means your reward depends on whether your nominated
+          validators are elected — not just on your stake amount. The 28-day unbonding and
+          manual reward claiming create additional operational complexity compared to most networks.
+        </p>
+        <div class="kpi-badges">
+          <span>Election-dependent rewards</span><span>28-day lock</span><span>Manual claiming</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:1rem;">
+      <strong>Key insight:</strong> Polkadot's NPoS design creates a more complex staking environment
+      than most networks — but also one where thoughtful nomination strategy can meaningfully improve
+      yield consistency. Understanding the Phragmén election algorithm is not required for participation,
+      but understanding its practical implications (diversify nominations, avoid over-subscribed validators)
+      is essential for reliable rewards.
+    </div>
+  </section>
+
+  <section class="card" id="npos-mechanics">
+    <h2>NPoS Mechanics: Phragmén Election and Stake Distribution</h2>
+    <p>
+      The sequential Phragmén algorithm is Polkadot's most distinctive technical feature.
+      It solves a stake distribution optimisation problem — selecting the active validator set
+      and distributing nominator stake to validators in a way that maximises the minimum
+      validator backing (and thus the cost of attacking any single validator).
+      The technical specification is available at
+      <a href="https://research.web3.foundation/Polkadot/protocols/NPoS" target="_blank" rel="noopener nofollow" class="src">Web3 Foundation Research — NPoS</a>.
+    </p>
+
+    <!-- NPoS flow visual -->
+    <div class="npos-flow" aria-label="NPoS election flow">
+      <div class="npos-node">Nominator A<br><small>Backs V1, V2, V3</small></div>
+      <span class="npos-arrow">→</span>
+      <div class="npos-node validator">Phragmén<br>Election<br><small>Selects 297</small></div>
+      <span class="npos-arrow">→</span>
+      <div class="npos-node">Active Set<br><small>V1 elected ✓</small></div>
+      <span class="npos-arrow">→</span>
+      <div class="npos-node">Rewards<br><small>A earns from V1</small></div>
+    </div>
+
+    <h3 style="margin-top:.75rem;">What the Phragmén algorithm does in practice</h3>
+    <ul>
+      <li><strong>Selects the active set:</strong> from all validator candidates with at least one nomination, Phragmén selects exactly 297 (the active validator count, adjustable by governance) to form the active set for the era.</li>
+      <li><strong>Distributes nominator stake:</strong> the algorithm assigns portions of each nominator's stake to their elected validators — a nominator backing 3 elected validators may have their stake split across all three, not just concentrated on one.</li>
+      <li><strong>Equalises validator backing:</strong> Phragmén tries to equalise the total stake backing each elected validator. This means validators with very high total backing may have their per-validator weight reduced, and validators with lower backing may receive more stake.</li>
+      <li><strong>Over-subscribed validators:</strong> each validator can only accept a limited number of nominators (currently 512). If a validator is over-subscribed, only the top 512 nominators by stake receive rewards — others are excluded even if the validator is in the active set.</li>
+    </ul>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>What "over-subscribed" means for you</h3>
+        <p class="muted">
+          If you nominate a popular validator and your DOT stake is not among the top 512 nominators,
+          you earn zero rewards from that validator even in eras when it is elected.
+          This is a critical risk for small nominators backing high-profile validators.
+          Always check a validator's nominator count and your position before nominating.
+        </p>
+        <div class="kpi-badges"><span>Top 512 only earn</span><span>Check nominator count</span><span>Small stake at risk</span></div>
+      </div>
+      <div class="mini">
+        <h3>Why diversifying nominations matters</h3>
+        <p class="muted">
+          Nominating only 1–2 validators means if those validators are not elected for an era,
+          you earn zero rewards. Nominating up to 16 validators ensures you have multiple chances
+          to have at least one elected validator earning rewards each era.
+          The Phragmén algorithm handles stake distribution across your elected nominations automatically.
+        </p>
+        <div class="kpi-badges"><span>Nominate up to 16</span><span>Diversify elections</span><span>Reduce zero-reward eras</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Practical rule:</strong> Nominate 8–16 validators with different backing levels
+      (not all from the same operator) to maximise the probability that multiple nominations
+      are in the active set each era. This is the single most effective nomination strategy
+      for consistent rewards.
+    </div>
+  </section>
+
+  <section class="card" id="rewards">
+    <h2>Rewards: Era Structure and What Drives Your Yield</h2>
+    <p>
+      Polkadot distributes rewards on an era basis — approximately every 24 hours.
+      Understanding the reward structure explains why different validators produce different
+      yields even at similar stake levels.
+      Current validator performance data is available at
+      <a href="https://staking.polkadot.network/" target="_blank" rel="noopener nofollow" class="src">staking.polkadot.network</a>
+      and
+      <a href="https://subscan.io/" target="_blank" rel="noopener nofollow" class="src">Subscan.io</a>.
+    </p>
+
+    <div class="era-bars" aria-label="Era reward components">
+      <div class="era-row"><span class="era-label">Inflation rewards</span><div class="era-track"><div class="era-fill" style="width:75%"></div></div><span class="era-val">Primary</span></div>
+      <div class="era-row"><span class="era-label">Transaction fees</span><div class="era-track"><div class="era-fill" style="width:20%"></div></div><span class="era-val">Secondary</span></div>
+      <div class="era-row"><span class="era-label">Validator commission</span><div class="era-track"><div class="era-fill" style="width:60%;background:linear-gradient(90deg,#B91C1C,#F87171)"></div></div><span class="era-val err">Deducted</span></div>
+    </div>
+
+    <ul>
+      <li><strong>Inflation-based issuance:</strong> Polkadot targets approximately 10% annual inflation of total DOT supply. Stakers receive the majority of this; the remainder goes to Polkadot's treasury. If less than the ideal ~54% of total DOT is staked, staking APY increases to incentivise more staking; above 54%, staking APY decreases.</li>
+      <li><strong>Era points:</strong> validators earn era points for producing blocks, backing parachains, and other duties. Era points determine each validator's share of the era reward pot — a validator with more era points earns a larger share.</li>
+      <li><strong>Validator commission:</strong> each validator sets a commission percentage (0–100%) deducted from their era rewards before distributing to nominators. This directly reduces your yield.</li>
+      <li><strong>Equal payout per validator:</strong> Polkadot distributes the same era reward to all elected validators (adjusted for era points), not proportional to their total backing stake. This means a validator with less total backing pays higher per-DOT yield to its nominators than a validator with more backing earning the same era reward.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Counter-intuitive insight:</strong> In Polkadot, a smaller/less popular validator
+      can pay higher per-DOT yield to its nominators than a large popular validator — because
+      the same era reward is divided among fewer staked DOT. This creates an incentive to
+      nominate validators that are in the active set but not the most popular ones.
+    </div>
+  </section>
+
+  <section class="card" id="apy-apr">
+    <h2>APY / APR: How to Compare Across Validators and Nomination Pools</h2>
+    <p>
+      Polkadot's era-based reward structure and manual claiming make APY vs APR comparisons
+      more complex than on auto-compounding networks. The key distinction is that compounding
+      requires manual action (claim + rebond) — so APY overstates effective returns unless
+      you actively compound.
+    </p>
+
+    <table aria-label="APY vs APR for DOT staking">
+      <thead>
+        <tr><th>Term</th><th>Polkadot context</th><th>What to watch</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Gross APY (network)</td>
+          <td>Polkadot's target ~12–15% APY at ideal staking rate</td>
+          <td>Decreases when total staked exceeds the 54% ideal; increases below it</td>
+        </tr>
+        <tr>
+          <td>Net APR (after commission)</td>
+          <td>APR after validator commission deduction</td>
+          <td>For direct nomination: verify validator's current commission before nominating</td>
+        </tr>
+        <tr class="highlight">
+          <td>Effective APY (with manual compound)</td>
+          <td>APR adjusted for how frequently you claim and rebond</td>
+          <td>Each claim + rebond costs transaction fees — factor gas into compounding frequency decisions</td>
+        </tr>
+        <tr>
+          <td>Nomination pool APY</td>
+          <td>Pool's effective yield minus pool operator commission</td>
+          <td>Pools handle compounding collectively — compare pool net APY to your direct nomination equivalent</td>
+        </tr>
+        <tr class="highlight">
+          <td>Real yield</td>
+          <td>USD-adjusted return after DOT price movement</td>
+          <td>DOT price variance dominates — 14% APR in DOT on a −40% DOT year is a USD loss</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>Quick check:</strong> For direct nomination, use net APR after commission as your
+      comparison metric. Verify the validator's commission on
+      <a href="https://staking.polkadot.network/" target="_blank" rel="noopener nofollow" class="src">staking.polkadot.network</a>
+      — commissions can be changed between eras. A 0% commission validator is not always the best
+      choice; sustainability and track record matter more than current commission for long-term nominating.
+    </div>
+  </section>
+
+  <section class="card" id="how-to">
+    <h2>How to Nominate DOT: Step-by-Step Tutorial</h2>
+    <ol>
+      <li><strong>Set up a Polkadot wallet:</strong> use
+        <a href="https://polkadot.js.org/extension/" target="_blank" rel="noopener nofollow" class="src">Polkadot.js extension</a>
+        (browser), Nova Wallet (mobile), or a Ledger hardware wallet. For meaningful DOT positions,
+        a hardware wallet is strongly recommended.</li>
+      <li><strong>Understand the stash/controller model:</strong> Polkadot historically used separate stash (holds bonded DOT) and controller (manages staking actions) accounts. In the current implementation, this model has been simplified — your account both bonds and controls. Ensure you understand your wallet's account model before bonding.</li>
+      <li><strong>Check the current minimum direct nomination threshold:</strong> the minimum to directly nominate validators on Polkadot is dynamic and can be hundreds of DOT — check the current minimum at
+        <a href="https://staking.polkadot.network/" target="_blank" rel="noopener nofollow" class="src">staking.polkadot.network</a>.
+        If below this minimum, use nomination pools instead.</li>
+      <li><strong>Research validators:</strong> use the official staking dashboard or
+        <a href="https://subscan.io/" target="_blank" rel="noopener nofollow" class="src">Subscan.io</a>
+        to evaluate validators on commission, era points history, total own stake, identity verification, and nominator count. Avoid over-subscribed validators if your DOT amount would not rank in the top 512.</li>
+      <li><strong>Nominate up to 16 validators:</strong> diversify across validators with different backing levels and operators. On the staking dashboard, select "Nominate" and add your chosen validators.</li>
+      <li><strong>Bond your DOT:</strong> confirm the bonding transaction. Your DOT is now bonded — it earns rewards when nominated validators are elected but cannot be transferred without an unbonding period.</li>
+      <li><strong>Set up a reward claiming routine:</strong> rewards expire after 84 eras (~84 days). Set a reminder to claim and rebond rewards at least monthly — or use nomination pools which handle this automatically.</li>
+    </ol>
+
+    <div class="note">
+      <strong>Key principle:</strong> Before bonding, confirm you will not need these DOT
+      for at least 28 days plus any exit-queue time. The 28-day unbonding period on Polkadot
+      is one of the longest of any major PoS network — illiquidity under pressure is the
+      most common source of operational regret for DOT stakers.
+    </div>
+  </section>
+
+  <section class="card" id="calculator">
+    <h2>Calculator: Net Yield Estimation for DOT</h2>
+    <p>
+      Polkadot's manual claiming and era-based rewards require a different yield calculation
+      approach than auto-compounding networks. Infrastructure costs are zero for nominators —
+      but transaction costs for claiming and rebonding are real and must be included.
+    </p>
+
+    <table aria-label="DOT staking calculator inputs">
+      <thead>
+        <tr><th>Input</th><th>Meaning</th><th>Polkadot-specific note</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Bonded DOT amount</td>
+          <td>Your staked principal</td>
+          <td>Must meet minimum direct nomination threshold — use pools if below it</td>
+        </tr>
+        <tr>
+          <td>Network target APY</td>
+          <td>~12–15% at current staking ratio</td>
+          <td>Decreases as total staked approaches 54% of supply; verify current rate on staking dashboard</td>
+        </tr>
+        <tr class="highlight">
+          <td>Average validator commission</td>
+          <td>Commission across your nominated validators</td>
+          <td>Target validators with 1–5% commission; 0% commission is a yellow flag (unsustainable)</td>
+        </tr>
+        <tr>
+          <td>Nomination election rate</td>
+          <td>% of eras where at least one nomination is in active set</td>
+          <td>With 8–16 well-chosen nominations, aim for 95%+ election rate — key driver of realized APY</td>
+        </tr>
+        <tr class="highlight">
+          <td>Compounding frequency</td>
+          <td>How often you claim and rebond (monthly, quarterly)</td>
+          <td>Each claim + rebond costs ~0.015 DOT in fees — balance frequency against cost</td>
+        </tr>
+        <tr>
+          <td>Over-subscription risk</td>
+          <td>Probability your stake is excluded from a validator's top 512</td>
+          <td>Critical for small nominators on popular validators — verify nominator count before bonding</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>Example: 500 DOT, direct nomination</h3>
+        <p class="muted">Target APY ~14%. 8 nominations, avg 2% commission. Election rate ~97%. Net APY: ~13.7%. Monthly claim + rebond: ~0.03 DOT fees. Annual gross: ~68.5 DOT. After fees: ~68.1 DOT ≈ 13.6% effective APY. Requires manual claiming.</p>
+      </div>
+      <div class="mini">
+        <h3>Example: 50 DOT via nomination pool</h3>
+        <p class="muted">Same target APY. Pool commission 5%: net ~13.3% APY. Pool handles compounding — no manual claiming. Annual gross: ~6.65 DOT. No risk of over-subscription or zero-reward eras from missed elections. Best option below the direct nomination minimum.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Takeaway:</strong> For DOT amounts below the current direct nomination minimum,
+      nomination pools deliver comparable net APY with significantly less operational overhead
+      and no risk of zero-reward eras from failed elections. For larger DOT positions,
+      direct nomination with 8–16 diverse validators provides the highest yield control.
+    </div>
+  </section>
+
+  <section class="card" id="nomination-pools">
+    <h2>Nomination Pools: Staking Without the High Minimum</h2>
+    <p>
+      Polkadot's nomination pools allow any amount of DOT to participate in staking —
+      removing the high direct nomination minimum. Pools aggregate member DOT and nominate
+      validators collectively, with each member earning proportional rewards.
+      Pool documentation is maintained at
+      <a href="https://wiki.polkadot.network/docs/learn-nomination-pools" target="_blank" rel="noopener nofollow" class="src">Polkadot Wiki — Nomination Pools</a>.
+    </p>
+
+    <div class="grid-2">
+      <div class="mini">
+        <h3>How nomination pools work</h3>
+        <p class="muted">
+          Pool members bond DOT to the pool. The pool's bonded account aggregates all member DOT
+          and nominates validators on behalf of members. Rewards are distributed proportionally.
+          Some pools auto-compound rewards; others require periodic claiming.
+          Pool operators set their own commission (typically 0–5% of rewards).
+        </p>
+        <div class="kpi-badges"><span>Any DOT amount</span><span>Collective nomination</span><span>Proportional rewards</span></div>
+      </div>
+      <div class="mini">
+        <h3>Key advantages and trade-offs</h3>
+        <p class="muted">
+          <strong>Advantages:</strong> No minimum (1 DOT), no election failure risk (pool handles nomination diversity),
+          some pools auto-compound, lower operational overhead.<br>
+          <strong>Trade-offs:</strong> Pool commission on top of validator commission, dependence on pool operator's nomination quality, less control over specific validator selection.
+        </p>
+        <div class="kpi-badges"><span>1 DOT minimum</span><span>Pool commission</span><span>Less control</span></div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:1rem;">How to choose a nomination pool</h3>
+    <ul>
+      <li>Open the pool listing on the official
+        <a href="https://staking.polkadot.network/#/pools" target="_blank" rel="noopener nofollow" class="src">staking.polkadot.network pools tab</a>.</li>
+      <li>Evaluate: pool state (open to new members), pool commission, pool's nominated validators (check their commission and performance), total pool points, and whether the pool auto-compounds.</li>
+      <li>Prefer pools with identifiable operators, transparent validator nominations, and a track record of consistent operation. Avoid very small pools that may have insufficient stake to consistently elect validators.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Nomination pool minimum:</strong> The minimum to join a pool is 1 DOT (plus transaction fees).
+      This is dramatically more accessible than the direct nomination minimum which can be 250+ DOT
+      depending on network conditions. For DOT amounts below the direct nomination threshold,
+      nomination pools are the recommended path.
+    </div>
+  </section>
+
+  <section class="card" id="unbonding">
+    <h2>28-Day Unbonding: Planning and Implications</h2>
+    <p>
+      Polkadot has a 28-day unbonding period — among the longest of any major PoS network.
+      During unbonding, DOT earns no rewards and cannot be transferred. This is the single most
+      important liquidity constraint to plan for before bonding any DOT.
+    </p>
+
+    <div class="grid-2">
+      <div class="mini">
+        <h3>Unbonding timeline</h3>
+        <p class="muted">
+          When you initiate unbonding: your DOT immediately stops earning rewards and enters
+          the unbonding queue. After 28 days (~672 hours), the unbonded DOT becomes redeemable —
+          you must then submit a "withdraw unbonded" transaction to make it spendable.
+          There is no partial unbonding of a portion of your stake during the waiting period.
+        </p>
+        <div class="kpi-badges"><span>28 days minimum</span><span>Zero rewards while unbonding</span><span>Withdraw transaction required</span></div>
+      </div>
+      <div class="mini">
+        <h3>Liquidity planning framework</h3>
+        <p class="muted">
+          Before bonding DOT, answer: could you need this DOT for any purpose in the next 35 days
+          (28 days unbonding + buffer)? If yes, do not bond it. Consider keeping a liquid DOT reserve
+          outside your bonded position for unexpected needs. The 28-day lock is non-negotiable —
+          no early exit exists outside of liquid staking protocols.
+        </p>
+        <div class="kpi-badges"><span>35-day planning horizon</span><span>Keep liquid buffer</span><span>Non-negotiable lock</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>For users who need liquidity flexibility:</strong> Consider using a liquid staking
+      option for DOT (where available) that represents your bonded position as a tradeable token —
+      similar to stETH for Ethereum. This adds a smart contract layer but removes the 28-day lock.
+      Evaluate carefully whether the liquidity benefit justifies the added protocol risk for your position size.
+    </div>
+  </section>
+
+  <section class="card" id="opengov">
+    <h2>OpenGov: Governance Participation for DOT Holders</h2>
+    <p>
+      Polkadot's OpenGov (Governance v2) is a fully on-chain governance system where DOT holders
+      vote on referendum proposals without a council intermediary. Participation is optional
+      for stakers but increasingly important as governance controls treasury spending and
+      parameter changes that directly affect staking economics.
+      Governance is accessible at
+      <a href="https://polkadot.polkassembly.io/" target="_blank" rel="noopener nofollow" class="src">Polkassembly</a>
+      and
+      <a href="https://subsquare.io/polkadot" target="_blank" rel="noopener nofollow" class="src">Subsquare</a>.
+    </p>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>How OpenGov voting works</h3>
+        <p class="muted">
+          DOT holders vote directly on proposals via conviction voting — you can multiply your
+          voting power by locking your DOT for longer periods (up to 6× multiplier for a 224-day lock).
+          All DOT in your account (bonded or free) can be used for voting.
+          Proposals span multiple tracks with different thresholds: root, staking admin, treasurer,
+          and others — each with distinct approval and support requirements.
+        </p>
+        <div class="kpi-badges"><span>Conviction voting</span><span>Multiple tracks</span><span>DOT lock multiplier</span></div>
+      </div>
+      <div class="mini">
+        <h3>Why governance matters for stakers</h3>
+        <p class="muted">
+          OpenGov proposals can change the ideal staking rate (affecting APY), validator count
+          (affecting election dynamics), inflation parameters, and treasury allocations to staking
+          infrastructure. Stakers who do not participate delegate these decisions entirely to
+          other token holders — including large validators and infrastructure companies whose
+          interests may not align with small nominators.
+        </p>
+        <div class="kpi-badges"><span>Staking rate changes</span><span>Validator count</span><span>Inflation parameters</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Practical governance participation:</strong> You do not need to vote on every proposal —
+      but monitoring proposals that affect staking parameters (inflation, validator count, staking admin track)
+      is worth the effort. Use Polkassembly to filter by track and subscribe to notifications for
+      staking-relevant proposals.
+    </div>
+  </section>
+
+  <section class="card" id="review">
+    <h2>Legitimacy, Trust Signals, and What to Watch (2025–2026)</h2>
+    <p>
+      Evaluating Polkadot staking legitimacy focuses on validator quality, wallet security,
+      and nomination pool operator integrity. The Polkadot protocol itself is maintained by
+      the Web3 Foundation and Parity Technologies with a long track record.
+      Independent validator analytics are provided at
+      <a href="https://w3f.github.io/validator-stats/" target="_blank" rel="noopener nofollow" class="src">W3F Validator Stats</a>.
+    </p>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>Validator trust signals</h3>
+        <p class="muted">
+          On-chain identity verification (verified by registrar on Polkadot's identity system).
+          Consistent era points history over trailing 90+ eras.
+          Own stake (commission) demonstrating skin in the game.
+          Reasonable commission (1–5%) indicating sustainable operation.
+          Not over-subscribed or at risk of becoming so.
+          Active governance participation record.
+        </p>
+      </div>
+      <div class="mini">
+        <h3>Red flags to investigate</h3>
+        <p class="muted">
+          0% commission from a new or anonymous validator — often unsustainable; commission
+          can be changed to 100% in a single era with one transaction. No on-chain identity.
+          Over-subscribed with your stake not in the top 512. Frequent commission changes.
+          No verifiable track record or contact channel. Promising guaranteed APY above
+          the network's theoretical maximum.
+        </p>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>2025/2026 threat:</strong> Fake Polkadot staking dashboards mimicking the official
+      staking.polkadot.network interface are an active attack vector. Always navigate via bookmark
+      or directly from the official
+      <a href="https://polkadot.network/" target="_blank" rel="noopener nofollow" class="src">polkadot.network</a>
+      site. Seed phrase requests from any "staking support" source are always scams.
+    </div>
+  </section>
+
+  <section class="card" id="safety">
+    <h2>Risks: Slashing, Over-Subscription, and Nomination Failures</h2>
+    <p>
+      Polkadot has more complex risk mechanics than most PoS networks due to its slashing
+      conditions, over-subscription mechanics, and the election-dependent reward structure.
+    </p>
+
+    <table aria-label="DOT staking risk factors">
+      <thead>
+        <tr><th>Risk</th><th>Impact</th><th>Mitigation</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Validator slashing</td>
+          <td class="err">Nominators share proportional principal loss</td>
+          <td>Nominate only validators with verified identity, long track record, and no prior slash history</td>
+        </tr>
+        <tr>
+          <td>Over-subscription exclusion</td>
+          <td class="warn">Zero rewards from that validator despite election</td>
+          <td>Verify your stake would rank in top 512 nominators before nominating a popular validator</td>
+        </tr>
+        <tr class="highlight">
+          <td>Nomination election failure</td>
+          <td class="warn">Zero rewards for eras where no nomination is elected</td>
+          <td>Nominate 8–16 diverse validators across different operators</td>
+        </tr>
+        <tr>
+          <td>Expired rewards (84-era limit)</td>
+          <td class="warn">Unclaimed rewards permanently lost after 84 eras</td>
+          <td>Set a monthly claiming reminder; use nomination pools if manual claiming is burdensome</td>
+        </tr>
+        <tr class="highlight">
+          <td>28-day unbonding illiquidity</td>
+          <td class="warn">Cannot access bonded DOT during unbonding</td>
+          <td>Maintain a liquid DOT buffer; only bond what you won't need for 35+ days</td>
+        </tr>
+        <tr>
+          <td>Validator commission increase</td>
+          <td class="warn">Commission can change to 100% in one era</td>
+          <td>Monitor validators' commission; set alerts on Subscan; be ready to redelegate promptly</td>
+        </tr>
+        <tr class="highlight">
+          <td>DOT price depreciation</td>
+          <td class="err">Real USD yield negative despite 14% DOT APY</td>
+          <td>Evaluate in USD terms; nominal DOT APY does not protect against price decline</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:1rem;">Polkadot slashing conditions</h3>
+    <ul>
+      <li><strong>Equivocation:</strong> a validator produces two conflicting blocks or votes for the same slot. Slash magnitude: 0.1–100% depending on how many validators slash simultaneously (correlated slashing penalty).</li>
+      <li><strong>Isolation:</strong> a single validator slashing incurs a small penalty (minimum 0.1%). If many validators slash simultaneously — indicating a coordinated attack — penalties are significantly higher.</li>
+      <li><strong>Nominators are proportionally slashed:</strong> unlike Cardano, Polkadot slashing directly affects nominator principal. This makes validator selection a direct risk management decision, not just a yield optimization.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Slashing is rare but real:</strong> Polkadot has had slashing events.
+      Nominating only validators with long, clean track records and on-chain identity
+      verification reduces slash risk substantially. Avoid validators with no history
+      or anonymous operation — the commission savings are not worth the slash risk exposure.
+    </div>
+  </section>
+
+  <section class="card" id="comparison">
+    <h2>Comparison: Direct Nomination vs Nomination Pools vs Liquid Staking</h2>
+    <p>
+      Each approach has distinct yield, control, operational, and risk characteristics.
+      The right choice depends on your DOT amount, technical engagement level,
+      and liquidity requirements.
+    </p>
+
+    <table aria-label="DOT staking approach comparison">
+      <thead>
+        <tr><th>Dimension</th><th>Direct nomination</th><th>Nomination pools</th><th>Liquid staking</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Minimum DOT</td>
+          <td class="warn">High — dynamic threshold, typically 250+ DOT</td>
+          <td class="ok">1 DOT</td>
+          <td class="ok">Typically no minimum</td>
+        </tr>
+        <tr>
+          <td>Compounding</td>
+          <td class="warn">Manual — claim + rebond transactions required</td>
+          <td class="ok">Some pools auto-compound</td>
+          <td class="ok">Auto-compound (if rebasing design)</td>
+        </tr>
+        <tr class="highlight">
+          <td>Liquidity</td>
+          <td class="err">28-day unbonding — hard lock</td>
+          <td class="err">28-day unbonding — hard lock</td>
+          <td class="ok">Liquid token tradeable any time</td>
+        </tr>
+        <tr>
+          <td>Validator control</td>
+          <td class="ok">Full — nominate exactly who you choose</td>
+          <td class="warn">Pool operator decides nominations</td>
+          <td class="warn">Protocol decides nominations</td>
+        </tr>
+        <tr class="highlight">
+          <td>Over-subscription risk</td>
+          <td class="warn">Yes — if stake not in top 512 of a validator</td>
+          <td class="ok">Pool manages this collectively</td>
+          <td class="ok">Protocol manages this</td>
+        </tr>
+        <tr>
+          <td>Net APY (typical)</td>
+          <td>~12–14% (depends on nominations)</td>
+          <td>~11–13% (after pool commission)</td>
+          <td>Varies by protocol</td>
+        </tr>
+        <tr class="highlight">
+          <td>Slashing exposure</td>
+          <td class="warn">Nominator bears proportional validator slash</td>
+          <td class="warn">Pool members bear proportional slash</td>
+          <td>Varies — depends on protocol design</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>Decision rule:</strong> If your DOT is below the direct nomination minimum, use nomination pools.
+      If you need liquidity flexibility and accept smart contract risk, explore liquid staking options.
+      For larger DOT positions where maximum yield control and direct validator accountability matter,
+      direct nomination with 8–16 diverse validators is the strongest approach.
+    </div>
+  </section>
+
+  <section class="card" id="best-practices">
+    <h2>Best Practices: High-Impact Operational Rules for DOT Stakers</h2>
+    <ul>
+      <li><strong>Nominate 8–16 diverse validators:</strong> use the full nomination slot allowance across validators from different operators, identity registrars, and backing levels. This is the single most important yield optimisation action for direct nominators.</li>
+      <li><strong>Verify on-chain identity before nominating:</strong> use the identity filter on the staking dashboard. Only nominate validators with verified on-chain identity — it is a meaningful signal of accountability.</li>
+      <li><strong>Avoid 0% commission validators from new operators:</strong> commission can be changed to 100% in a single era. A new validator with 0% commission and no track record is a risk, not a yield opportunity.</li>
+      <li><strong>Check over-subscription status:</strong> before nominating any popular validator, verify your stake amount would rank in the top 512 nominators. If not, choose a less-subscribed alternative.</li>
+      <li><strong>Set a reward claiming reminder:</strong> rewards expire after 84 eras (~84 days). Claim and rebond at least monthly. If manual claiming is burdensome, use nomination pools.</li>
+      <li><strong>Never bond DOT you may need within 35 days:</strong> the 28-day unbonding period is non-negotiable. Always maintain a liquid DOT reserve outside your bonded position.</li>
+      <li><strong>Monitor validator commission weekly:</strong> commission can change to 100% with one transaction. Use Subscan alerts for your nominated validators. Redelegate immediately if a validator raises commission significantly.</li>
+      <li><strong>Participate in OpenGov on staking-relevant proposals:</strong> proposals that change the ideal staking rate or validator count directly affect your yield. Monitor Polkassembly for relevant tracks.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Most common mistake:</strong> Nominating fewer than 5 validators and picking only
+      the most popular/visible ones. Popular validators are often over-subscribed (your stake
+      may not earn rewards) and offer lower per-DOT yield (because the era reward is divided
+      among more staked DOT). Diversify across 8–16 well-researched validators including some
+      less prominent but reliable ones.
+    </div>
+  </section>
+
+  <section class="card" id="troubleshooting">
+    <h2>Troubleshooting: Common Issues, Root Causes, and Fixes</h2>
+
+    <h3>"I have not received any rewards for several eras"</h3>
+    <ul>
+      <li>Check whether any of your nominated validators were in the active set during the relevant eras. Use the staking dashboard or Subscan — search your nominated validators and verify their active set status per era.</li>
+      <li>Verify you are not excluded from a validator's top 512 nominators. If your DOT stake is below the threshold for any of your nominated validators, you earn zero rewards from those validators even when they are elected.</li>
+      <li>Rewards on Polkadot require a payout transaction — they are not automatically sent. Check if your rewards have been calculated but not yet paid out by looking at the validator's payout status on Subscan.</li>
+    </ul>
+
+    <h3>"I cannot initiate unbonding or the unbonding is not completing"</h3>
+    <ul>
+      <li>Ensure you are initiating the unbonding transaction from the correct account (the stash account that holds the bonded DOT). Polkadot.js interface displays this clearly in the staking section.</li>
+      <li>After the 28-day unbonding period, a separate "withdraw unbonded" transaction is required to make the DOT spendable. If unbonding appears complete but DOT is not available, check whether you have submitted the withdraw transaction.</li>
+      <li>Verify sufficient free balance in your account for the transaction fee — if your entire DOT balance is bonded, you may lack the fee to initiate unbonding. Keep at least 1 DOT free for fees.</li>
+    </ul>
+
+    <h3>"A validator I nominated was slashed — what happens to my DOT?"</h3>
+    <ul>
+      <li>Nominators who backed a slashed validator have a proportional amount of their bonded DOT slashed. The exact amount depends on the offense severity and whether it was an isolated event or correlated with other validators slashing simultaneously.</li>
+      <li>There is a deferred slashing mechanism — slashes are applied after a delay (up to 27 days) to allow for governance cancellation of erroneous slashes. Check governance proposals after a reported slash event.</li>
+      <li>After the slash is applied, redelegate your remaining bonded DOT to validators with no slash history.</li>
+    </ul>
+
+    <h3>"My rewards expired without being claimed"</h3>
+    <ul>
+      <li>Unfortunately, Polkadot rewards that expire after 84 eras are permanently lost — there is no recovery mechanism. Set a recurring monthly calendar reminder to claim rewards to prevent this from recurring.</li>
+      <li>Consider switching to nomination pools which handle reward claiming collectively — individual members no longer risk expiry under the pool model.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Best debugging method:</strong> Subscan.io is the most comprehensive block explorer
+      for Polkadot staking state — use it to verify active set participation, reward payout status,
+      nomination positions, and slash history for any validator. The official staking dashboard
+      provides a cleaner UI but Subscan is the authoritative data source for detailed debugging.
+    </div>
+  </section>
+
+  <section class="eeat" id="eeat" aria-labelledby="eeat-title">
+    <h2 id="eeat-title">Authoritative Notes &amp; External References</h2>
+    <p>
+      Primary sources used throughout this guide. All links point to official Polkadot documentation,
+      Web3 Foundation research, official staking tooling, or established Polkadot ecosystem analytics.
+    </p>
+
+    <div class="grid-2">
+      <div>
+        <h3>Protocol Docs &amp; Official Tools</h3>
+        <ul>
+          <li><a href="https://polkadot.network/" target="_blank" rel="noopener nofollow">Polkadot.network — Official Site</a></li>
+          <li><a href="https://wiki.polkadot.network/" target="_blank" rel="noopener nofollow">Polkadot Wiki — NPoS, Staking &amp; Governance Documentation</a></li>
+          <li><a href="https://staking.polkadot.network/" target="_blank" rel="noopener nofollow">Staking.polkadot.network — Official Staking Dashboard</a></li>
+          <li><a href="https://wiki.polkadot.network/docs/learn-nomination-pools" target="_blank" rel="noopener nofollow">Polkadot Wiki — Nomination Pools</a></li>
+          <li><a href="https://polkadot.js.org/extension/" target="_blank" rel="noopener nofollow">Polkadot.js Extension — Reference Browser Wallet</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Research, Analytics &amp; Governance</h3>
+        <ul>
+          <li><a href="https://research.web3.foundation/Polkadot/protocols/NPoS" target="_blank" rel="noopener nofollow">Web3 Foundation Research — NPoS &amp; Phragmén</a></li>
+          <li><a href="https://subscan.io/" target="_blank" rel="noopener nofollow">Subscan.io — Polkadot Block Explorer &amp; Staking Analytics</a></li>
+          <li><a href="https://polkadot.polkassembly.io/" target="_blank" rel="noopener nofollow">Polkassembly — OpenGov Proposal Tracking</a></li>
+          <li><a href="https://subsquare.io/polkadot" target="_blank" rel="noopener nofollow">Subsquare — Polkadot Governance Interface</a></li>
+          <li><a href="https://w3f.github.io/validator-stats/" target="_blank" rel="noopener nofollow">W3F Validator Stats — Independent Validator Analytics</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:1rem;">
+      <strong>About:</strong> Prepared by Crypto Finance Experts as a practical SEO-oriented knowledge base covering
+      DOT staking on Polkadot: NPoS and Phragmén election mechanics, nomination strategy, era rewards,
+      nomination pools, 28-day unbonding, OpenGov participation, slashing conditions, APY/APR,
+      and troubleshooting.
+    </div>
+  </section>
+
+  <section class="card faq-section" aria-labelledby="faq">
+    <h2 id="faq">DOT Staking: Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f1" id="b1">
+        <h3>How does NPoS work on Polkadot?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f1" class="faq-content" role="region" aria-labelledby="b1">
+        <p>Nominated Proof-of-Stake (NPoS) on Polkadot works by having DOT holders (nominators) select up to 16 validators they trust. Each era (~24 hours), the sequential Phragmén algorithm selects the active validator set (currently 297) from all candidates and distributes nominator stake optimally across them. You earn rewards only from validators that are elected to the active set — making nomination diversity the primary determinant of reward consistency.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f2" id="b2">
+        <h3>What APY can I earn staking DOT?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f2" class="faq-content" role="region" aria-labelledby="b2">
+        <p>Polkadot targets approximately 10% annual inflation, with stakers receiving the majority. At the current staking ratio (approximately 50–55% of total supply staked), the gross APY for stakers is approximately 12–15%. Net APY after validator commission (typically 1–5%) is approximately 11–14%. This decreases if total staked rises significantly above the 54% ideal, and increases below it. Verify current rates on the official staking dashboard.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f3" id="b3">
+        <h3>Why am I earning zero rewards for some eras?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f3" class="faq-content" role="region" aria-labelledby="b3">
+        <p>You earn rewards only in eras where at least one of your nominated validators is elected to the active set. If all your nominations miss the active set, you earn zero. The solution is to nominate 8–16 diverse validators — maximising the probability that at least one is always elected. Also check whether you are excluded from any over-subscribed validator's top 512 nominators by stake — being excluded means zero rewards from that validator even when it is elected.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f4" id="b4">
+        <h3>What is the 28-day unbonding period and can I get around it?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f4" class="faq-content" role="region" aria-labelledby="b4">
+        <p>The 28-day unbonding period is a Polkadot protocol parameter. When you initiate unbonding, your DOT immediately stops earning rewards and enters a 28-day waiting period before it can be transferred. There is no way to shorten this period through native staking. If you need liquidity flexibility, liquid staking protocols (where available for DOT) issue a tradeable token representing your bonded position — but add smart contract risk. Plan by maintaining a liquid DOT buffer outside your bonded position for unexpected needs.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f5" id="b5">
+        <h3>What are nomination pools and who should use them?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f5" class="faq-content" role="region" aria-labelledby="b5">
+        <p>Nomination pools allow any amount of DOT (minimum 1 DOT) to participate in staking — removing the high direct nomination minimum. Pool members bond DOT to the pool's account, which nominates validators collectively. Rewards are distributed proportionally. Nomination pools are the recommended path for DOT amounts below the direct nomination minimum (typically 250+ DOT), and for stakers who want less operational overhead. Pool operators charge an additional commission on top of validator commission.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f6" id="b6">
+        <h3>Can my DOT be slashed as a nominator?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f6" class="faq-content" role="region" aria-labelledby="b6">
+        <p>Yes — unlike Cardano, Polkadot nominators share proportional slashing with the validators they nominated when those validators commit slashable offences (equivocation). The slash magnitude depends on the offence severity and whether it was isolated or correlated with other validators. A single validator equivocating incurs a minimum 0.1% slash; coordinated equivocation across many validators can result in much higher slash rates. This makes validator selection a direct risk management decision — always nominate validators with verified identities and clean slash histories.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f7" id="b7">
+        <h3>What is OpenGov and should I participate as a DOT staker?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f7" class="faq-content" role="region" aria-labelledby="b7">
+        <p>OpenGov is Polkadot's fully on-chain governance system where DOT holders vote directly on referendum proposals without a council intermediary. Stakers can multiply their voting power by locking DOT for longer periods (conviction voting). Governance proposals include changes to the ideal staking rate, validator set size, inflation parameters, and treasury spending — all of which directly affect staking economics. Participating, or at least monitoring staking-relevant proposals on Polkassembly, is increasingly important for stakers who want to protect their yield long-term.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f8" id="b8">
+        <h3>How many validators should I nominate?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f8" class="faq-content" role="region" aria-labelledby="b8">
+        <p>Nominate as many as possible — up to the 16-validator limit. More nominations means a higher probability that at least one nominated validator is in the active set each era. Diversify across different operators, different backing levels (not all top validators), and different geographic/infrastructure diversity. Aim for at least 8 nominations as a practical minimum; 12–16 is better. The Phragmén algorithm handles stake distribution across your elected nominations automatically.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f9" id="b9">
+        <h3>What happens if my nominated validator raises commission to 100%?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f9" class="faq-content" role="region" aria-labelledby="b9">
+        <p>A validator can change their commission to any value (including 100%) in a single era with no advance notice required. If a validator raises commission to 100%, you would earn zero rewards from that validator — all rewards go to the operator. The fix: redelegate immediately to a different validator. This is why monitoring validator commission is essential — use Subscan alerts for your nominated validators and respond promptly to any commission changes. This is one of the strongest arguments for nominating validators with verified identities and public accountability.</p>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="container" role="contentinfo" style="padding:2rem 0;border-top:1px solid var(--line);margin-top:2rem">
+  <p class="muted">© 2026 DOT Staking Guide. Educational content with safety-first operational focus. Not financial or investment advice.</p>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      const body = document.getElementById(btn.getAttribute('aria-controls'));
+      btn.setAttribute('aria-expanded', String(!open));
+      btn.querySelector('.faq-plus').textContent = open ? '+' : '−';
+      body.style.maxHeight = open ? '0' : body.scrollHeight + 'px';
+      body.classList.toggle('open', !open);
+    });
+  });
+</script>
+
+</body>
+</html>
